@@ -1,21 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Inventory : MonoBehaviour
 {
-    [HideInInspector] public UnityEvent OnItemPlacedInInventory = new UnityEvent();
-
-    [HideInInspector] public List<PickableItem> InventoryItems = new List<PickableItem>();
+    [HideInInspector] private List<PickUpableItem> InventoryItems = new List<PickUpableItem>();
     [SerializeField] private int maxCapacity = 10;
 
-    public void AddItem(PickableItem item)
+    public void AddItem(PickUpableItem item)
     {
         if (InventoryItems.Count < maxCapacity)
         {
             InventoryItems.Add(item);
 
-            OnItemPlacedInInventory?.Invoke();
+            Debug.Log($"{item.ItemName} placed in inventory");
         }
         else
         {
@@ -23,7 +20,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public PickableItem GetItem(int index)
+    public PickUpableItem GetItem(int index)
     {
         if (index >= 0 && index < InventoryItems.Count)
         {
@@ -31,5 +28,25 @@ public class Inventory : MonoBehaviour
         }
 
         return null;
+    }
+
+    public bool HasAnyItem()
+    {
+        if (InventoryItems.Count > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public int GetInventoryItemsCount()
+    {
+        return InventoryItems.Count;
+    }
+
+    public int GetMaxCapacity()
+    {
+        return maxCapacity;
     }
 }
